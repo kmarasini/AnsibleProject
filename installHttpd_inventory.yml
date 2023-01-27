@@ -1,0 +1,9 @@
+---
+ansible_client:
+  host:
+    web1.maching:
+    web2.machine:
+    web3.maching:
+
+
+...

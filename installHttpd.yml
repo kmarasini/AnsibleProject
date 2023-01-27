@@ -1,0 +1,22 @@
+---
+# this is to install httpd and start the server
+- name: httpInstal Playbook
+  host: ansible_client   # list of ansible_client is passed from installhttpd_inventory file
+  remot_user: root
+  become: true
+
+  Tasks:
+    - name: install httpd
+      yum:
+        name: httpd
+        state: latest
+    - name: run httpd
+      servic:
+        name: httpd
+        state: started
+    - name: create content
+      copy:
+        content: " congerats on installing server"
+        dest: /var/wwww/html/index.html
+
+    

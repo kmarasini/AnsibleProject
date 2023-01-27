@@ -1,0 +1,47 @@
+---
+- hosts: linuxsysadmin # host is passing from inventory file of line 18
+  remote_user: root
+  become: yes
+  become_method: sudo # if remote user != sudo
+  gather_facts: no
+  connection: ssh
+
+  tasks:
+    - name: Add group "nixadmin to remote user"
+      group:  # this is group module is used
+        name: nixadmin
+        gid: 2010
+        state: present  # note " absent is for remove "
+
+    - name : Add group "Office" to remote server
+      group:
+        name: office
+        gid: 2011
+        state: present
+    
+    - name: Add user "sysadmin" to remote server
+      user: # usre model is used her 
+        name: sysadmin
+        comment: "Privileged User"
+        uid: 2001
+        group: nixadmin
+        groups: office
+        append: yes
+        shell: /bin/bash
+        generate_ssh_key: yes
+        ssh_key_bits: 2048
+        ssh_key_file: .ssh/id_rsa
+
+    - name: Add user keshav to remote server
+      user:
+        name: keshav
+        comment: " Unprivileged user"
+        uid: 2001
+        group: office
+        shell: /bin/bash
+        generate_ssh_key: yes
+        ssh_key_bits: 2048
+        ssh_key_file: .ssh/id_rsa
+
+...
+      
